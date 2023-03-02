@@ -105,11 +105,6 @@ article = """
                     <image href="https://img.shields.io/badge/🤗 Spaces-Riffusion-blue" src="https://img.shields.io/badge/🤗 Spaces-Riffusion-blue.png" height="20"/>
                  </a>
             </svg>
-            <svg height="20" width="192" style="margin-left:4px;margin-bottom: 6px;">       
-                 <a href="https://huggingface.co/spaces/Mubert/Text-to-Music" target="_blank">
-                    <image href="https://img.shields.io/badge/🤗 Spaces-Mubert_Text_to_Music-blue" src="https://img.shields.io/badge/🤗 Spaces-Mubert_Text_to_Music-blue.png" height="20"/>
-                 </a>
-            </svg>
         </div>
     </div>
 
