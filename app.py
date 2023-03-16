@@ -62,7 +62,7 @@ def get_track_by_tags(tags, pat, duration, gen_intensity, gen_mode, maxit=20):
 
 def generate_track_by_prompt(prompt, duration, gen_intensity, gen_mode):
     try:
-        pat = get_pat("prodia@prodia.com")
+        pat = get_pat("mail@mail.com")
         _, tags = get_tags_for_prompts(minilm, mubert_tags_embeddings, [prompt, ])[0]
         result = get_track_by_tags(tags, pat, int(duration), gen_intensity, gen_mode)
         print(result)
