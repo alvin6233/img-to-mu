@@ -46,7 +46,7 @@ def get_pat_token():
                            "phone":"+11234567890",
                            "license": MUBERT_LICENSE,
                            "token": MUBERT_TOKEN,
-                           "mode": MUBERT_MODE,
+                           
                        }
                    })
 
