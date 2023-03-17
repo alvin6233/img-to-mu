@@ -23,6 +23,7 @@ def get_pat(email: str):
                    })
 
     rdata = json.loads(r.text)
+    print(rdata)
     #assert rdata['status'] == 1, "probably incorrect e-mail"
     pat = rdata['data']['pat']
     return pat
