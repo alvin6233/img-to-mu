@@ -57,7 +57,7 @@ def get_pat_token():
     print(rdata['data']['pat'])
     return rdata['data']['pat'] 
 
-def get_music(prompt, track_duration, gen_intensity, gen_mode):
+def get_music(pat, prompt, track_duration, gen_intensity, gen_mode):
     
     r = httpx.post('https://api-b2b.mubert.com/v2/TTMRecordTrack',
                    json={
@@ -65,7 +65,7 @@ def get_music(prompt, track_duration, gen_intensity, gen_mode):
                        "params":
                            {
                                 "text":prompt,
-                                "pat": "aW1ndG9tdXNpYy4xNzA4Nzg5MS40ZGIxNGM0YjM2NDY4ZDM2OWQ3ZjQ4NTg1NmNiNjg0N2NmYjJmMDZhLjEuMw",
+                                "pat": pat,
                                 "mode":"track",
                                 "duration":track_duration, 
                                 "bitrate":"192" 
