@@ -30,7 +30,7 @@ def get_prompts(uploaded_image, track_duration, gen_intensity, gen_mode):
   music_result = get_music(pat, prompt, track_duration, gen_intensity, gen_mode)
   #music_result = generate_track_by_prompt(pat, prompt, track_duration, gen_intensity, gen_mode)
   print(music_result)
-  return music_result[0], gr.update(visible=True), gr.update(visible=True), gr.update(visible=True)
+  return music_result, gr.update(visible=True), gr.update(visible=True), gr.update(visible=True)
 
 from utils import get_tags_for_prompts, get_mubert_tags_embeddings, get_pat
 
@@ -54,11 +54,30 @@ def get_pat_token():
     print(rdata)
     #assert rdata['status'] == 1, "probably incorrect e-mail"
     pat = rdata['data']['pat']
-    
+    print(pat)
     return pat
 
 def get_music(pat, prompt, track_duration, gen_intensity, gen_mode):
     
+    r = httpx.post('https://api-b2b.mubert.com/v2/GetServiceAccess',
+                   json={
+                       "method": "TTMRecordTrack",
+                       "params":
+                           {
+                                "text":prompt,
+                                "pat":pat,
+                                "mode":"track",
+                                "duration":track_duration, 
+                                "bitrate":"192" 
+                           }
+    })
+
+    rdata = json.loads(r.text)
+    print(rdata)
+    #assert rdata['status'] == 1, "probably incorrect e-mail"
+    track = rdata['data']['tasks']['download_link']
+
+    print(track)
     return track
     
 def get_track_by_tags(tags, pat, duration, gen_intensity, gen_mode, maxit=20):
