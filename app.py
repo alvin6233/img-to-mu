@@ -44,8 +44,8 @@ def get_pat_token():
                        "params": {
                            "email":"mail@mail.com",
                            "phone":"+11234567890",
-                           "license": MUBERT_LICENSE,
-                           "token": MUBERT_TOKEN,
+                           "license": str(MUBERT_LICENSE),
+                           "token": str(MUBERT_TOKEN),
                            
                        }
                    })
