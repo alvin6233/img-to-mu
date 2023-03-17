@@ -21,21 +21,23 @@ img_to_text = gr.Blocks.load(name="spaces/fffiloni/CLIP-Interrogator-2")
 
 from share_btn import community_icon_html, loading_icon_html, share_js
 
+minilm = SentenceTransformer('all-MiniLM-L6-v2')
+mubert_tags_embeddings = get_mubert_tags_embeddings(minilm)
+
 def get_prompts(uploaded_image, track_duration, gen_intensity, gen_mode):
   print("calling clip interrogator")
   #prompt = img_to_text(uploaded_image, "ViT-L (best for Stable Diffusion 1.*)", "fast", fn_index=1)[0]
   prompt = img_to_text(uploaded_image, 'fast', 4, fn_index=1)[0]
   print(prompt)
   pat = get_pat_token()
-  music_result = get_music(pat, prompt, track_duration, gen_intensity, gen_mode)
-  #music_result = generate_track_by_prompt(pat, prompt, track_duration, gen_intensity, gen_mode)
+  #music_result = get_music(pat, prompt, track_duration, gen_intensity, gen_mode)
+  music_result = generate_track_by_prompt(pat, prompt, track_duration, gen_intensity, gen_mode)
   #print(pat)
   return music_result, gr.update(visible=True), gr.update(visible=True), gr.update(visible=True)
 
-#from utils import get_tags_for_prompts, get_mubert_tags_embeddings, get_pat
+from utils import get_tags_for_prompts, get_mubert_tags_embedding
 
-#minilm = SentenceTransformer('all-MiniLM-L6-v2')
-#mubert_tags_embeddings = get_mubert_tags_embeddings(minilm)
+
 
 def get_pat_token():
     r = httpx.post('https://api-b2b.mubert.com/v2/GetServiceAccess',
@@ -107,9 +109,8 @@ def get_track_by_tags(tags, pat, duration, gen_intensity, gen_mode, maxit=20):
         time.sleep(1)
 
 
-def generate_track_by_prompt(prompt, duration, gen_intensity, gen_mode):
+def generate_track_by_prompt(pat, prompt, duration, gen_intensity, gen_mode):
     try:
-        pat = get_pat("mail@mail.com")
         _, tags = get_tags_for_prompts(minilm, mubert_tags_embeddings, [prompt, ])[0]
         result = get_track_by_tags(tags, pat, int(duration), gen_intensity, gen_mode)
         print(result)
