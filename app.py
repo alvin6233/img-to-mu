@@ -75,10 +75,10 @@ def get_music(prompt, track_duration, gen_intensity, gen_mode):
     rdata = json.loads(r.text)
     print(rdata)
     #assert rdata['status'] == 1, "probably incorrect e-mail"
-    track = rdata['data']['tasks']['download_link']
+    #track = rdata['data']['tasks']['download_link']
 
-    print(track)
-    return track
+    #print(track)
+    return "done"
     
 def get_track_by_tags(tags, pat, duration, gen_intensity, gen_mode, maxit=20):
     
