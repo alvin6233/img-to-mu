@@ -29,7 +29,7 @@ def get_prompts(uploaded_image, track_duration, gen_intensity, gen_mode):
   pat = get_pat_token()
   #music_result = get_music(pat, prompt, track_duration, gen_intensity, gen_mode)
   #music_result = generate_track_by_prompt(pat, prompt, track_duration, gen_intensity, gen_mode)
-  print(music_result)
+  print(pat)
   return pat, gr.update(visible=True), gr.update(visible=True), gr.update(visible=True)
 
 #from utils import get_tags_for_prompts, get_mubert_tags_embeddings, get_pat
