@@ -27,7 +27,7 @@ def get_prompts(uploaded_image, track_duration, gen_intensity, gen_mode):
   prompt = img_to_text(uploaded_image, 'fast', 4, fn_index=1)[0]
   print(prompt)
   #pat = get_pat_token()
-  music_result = get_music(pat, prompt, track_duration, gen_intensity, gen_mode)
+  music_result = get_music(prompt, track_duration, gen_intensity, gen_mode)
   #music_result = generate_track_by_prompt(pat, prompt, track_duration, gen_intensity, gen_mode)
   print(pat)
   return music_result, gr.update(visible=True), gr.update(visible=True), gr.update(visible=True)
@@ -57,7 +57,7 @@ def get_pat_token():
     print(rdata)
     return rdata
 
-def get_music(pat, prompt, track_duration, gen_intensity, gen_mode):
+def get_music(prompt, track_duration, gen_intensity, gen_mode):
     
     r = httpx.post('https://api-b2b.mubert.com/v2/GetServiceAccess',
                    json={
