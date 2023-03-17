@@ -68,7 +68,6 @@ def get_music(pat, prompt, track_duration, gen_intensity, gen_mode):
                                 "pat": pat,
                                 "mode":"track",
                                 "duration":track_duration, 
-                                "bitrate":"192" 
                            }
     })
 
