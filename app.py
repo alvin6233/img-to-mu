@@ -20,7 +20,7 @@ MUBERT_TOKEN = os.environ.get('MUBERT_TOKEN')
 img_to_text = gr.Blocks.load(name="spaces/fffiloni/CLIP-Interrogator-2")
 
 from share_btn import community_icon_html, loading_icon_html, share_js
-
+from utils import get_tags_for_prompts, get_mubert_tags_embedding
 minilm = SentenceTransformer('all-MiniLM-L6-v2')
 mubert_tags_embeddings = get_mubert_tags_embeddings(minilm)
 
@@ -35,7 +35,7 @@ def get_prompts(uploaded_image, track_duration, gen_intensity, gen_mode):
   #print(pat)
   return music_result, gr.update(visible=True), gr.update(visible=True), gr.update(visible=True)
 
-from utils import get_tags_for_prompts, get_mubert_tags_embedding
+
 
 
 
