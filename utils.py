@@ -3,30 +3,13 @@ import numpy as np
 import httpx
 import os
 
-from constants import MUBERT_TAGS, MUBERT_MODE, MUBERT_LICENSE, MUBERT_TOKEN
+from constants import MUBERT_TAGS, MUBERT_MODE, MUBERT_LICENSE
 
 def get_mubert_tags_embeddings(w2v_model):
     return w2v_model.encode(MUBERT_TAGS)
 
 
-def get_pat(email: str):
-    r = httpx.post('https://api-b2b.mubert.com/v2/GetServiceAccess',
-                   json={
-                       "method": "GetServiceAccess",
-                       "params": {
-                           "email":"mail@mail.com",
-                           "phone":"+11234567890",
-                           "license": MUBERT_LICENSE,
-                           "token": MUBERT_TOKEN,
-                           "mode": MUBERT_MODE,
-                       }
-                   })
 
-    rdata = json.loads(r.text)
-    print(rdata)
-    #assert rdata['status'] == 1, "probably incorrect e-mail"
-    pat = rdata['data']['pat']
-    return pat
 
 
 def find_similar(em, embeddings, method='cosine'):
