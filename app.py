@@ -27,10 +27,10 @@ def get_prompts(uploaded_image, track_duration, gen_intensity, gen_mode):
   prompt = img_to_text(uploaded_image, 'fast', 4, fn_index=1)[0]
   print(prompt)
   pat = get_pat_token()
-  music_result = get_music(pat, prompt, track_duration, gen_intensity, gen_mode)
+  #music_result = get_music(pat, prompt, track_duration, gen_intensity, gen_mode)
   #music_result = generate_track_by_prompt(pat, prompt, track_duration, gen_intensity, gen_mode)
   print(music_result)
-  return music_result, gr.update(visible=True), gr.update(visible=True), gr.update(visible=True)
+  return pat, gr.update(visible=True), gr.update(visible=True), gr.update(visible=True)
 
 #from utils import get_tags_for_prompts, get_mubert_tags_embeddings, get_pat
 
@@ -184,7 +184,7 @@ with gr.Blocks(css="style.css") as demo:
     
         input_img = gr.Image(type="filepath", elem_id="input-img")
         music_output = gr.Audio(label="Result", type="filepath", elem_id="music-output").style(height="5rem")
-        
+        text_status = gr.Textbox(label="status")
         with gr.Group(elem_id="share-btn-container"):
             community_icon = gr.HTML(community_icon_html, visible=False)
             loading_icon = gr.HTML(loading_icon_html, visible=False)
@@ -200,7 +200,7 @@ with gr.Blocks(css="style.css") as demo:
 
         gr.HTML(article)
     
-    generate.click(get_prompts, inputs=[input_img,track_duration,gen_intensity,gen_mode], outputs=[music_output, share_button, community_icon, loading_icon], api_name="i2m")
+    generate.click(get_prompts, inputs=[input_img,track_duration,gen_intensity,gen_mode], outputs=[text_status, share_button, community_icon, loading_icon], api_name="i2m")
     share_button.click(None, [], [], _js=share_js)
 
 demo.queue(max_size=32, concurrency_count=20).launch()
