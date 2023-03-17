@@ -26,7 +26,8 @@ def get_prompts(uploaded_image, track_duration, gen_intensity, gen_mode):
   #prompt = img_to_text(uploaded_image, "ViT-L (best for Stable Diffusion 1.*)", "fast", fn_index=1)[0]
   prompt = img_to_text(uploaded_image, 'fast', 4, fn_index=1)[0]
   print(prompt)
-  music_result = generate_track_by_prompt(prompt, track_duration, gen_intensity, gen_mode)
+  pat = get_pat_token()
+  music_result = generate_track_by_prompt(pat, prompt, track_duration, gen_intensity, gen_mode)
   print(music_result)
   return music_result[0], gr.update(visible=True), gr.update(visible=True), gr.update(visible=True)
 
@@ -36,6 +37,23 @@ minilm = SentenceTransformer('all-MiniLM-L6-v2')
 mubert_tags_embeddings = get_mubert_tags_embeddings(minilm)
 
 def get_pat_token():
+    r = httpx.post('https://api-b2b.mubert.com/v2/GetServiceAccess',
+                   json={
+                       "method": "GetServiceAccess",
+                       "params": {
+                           "email":"mail@mail.com",
+                           "phone":"+11234567890",
+                           "license": MUBERT_LICENSE,
+                           "token": MUBERT_TOKEN,
+                           "mode": MUBERT_MODE,
+                       }
+                   })
+
+    rdata = json.loads(r.text)
+    print(rdata)
+    #assert rdata['status'] == 1, "probably incorrect e-mail"
+    pat = rdata['data']['pat']
+    
     return pat
     
 def get_track_by_tags(tags, pat, duration, gen_intensity, gen_mode, maxit=20):
