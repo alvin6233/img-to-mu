@@ -49,7 +49,8 @@ def get_track_by_tags(tags, pat, duration, gen_intensity, gen_mode, maxit=20):
                    })
 
     rdata = json.loads(r.text)
-    assert rdata['status'] == 1, rdata['error']['text']
+    print(rdata)
+    #assert rdata['status'] == 1, rdata['error']['text']
     trackurl = rdata['data']['tasks'][0]['download_link']
 
     print('Generating track ', end='')
