@@ -32,4 +32,5 @@ def get_tags_for_prompts(w2v_model, mubert_tags_embeddings, prompts, top_n=3, de
         if debug:
             print(f"Prompt: {prompts[i]}\nTags: {', '.join(top_tags)}\nScores: {top_prob}\n\n\n")
         ret.append((prompts[i], list(top_tags)))
+        print("ret: " + ret)
     return ret
