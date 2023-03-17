@@ -26,11 +26,11 @@ def get_prompts(uploaded_image, track_duration, gen_intensity, gen_mode):
   #prompt = img_to_text(uploaded_image, "ViT-L (best for Stable Diffusion 1.*)", "fast", fn_index=1)[0]
   prompt = img_to_text(uploaded_image, 'fast', 4, fn_index=1)[0]
   print(prompt)
-  pat = get_pat_token()
-  #music_result = get_music(pat, prompt, track_duration, gen_intensity, gen_mode)
+  #pat = get_pat_token()
+  music_result = get_music(pat, prompt, track_duration, gen_intensity, gen_mode)
   #music_result = generate_track_by_prompt(pat, prompt, track_duration, gen_intensity, gen_mode)
   print(pat)
-  return pat, gr.update(visible=True), gr.update(visible=True), gr.update(visible=True)
+  return music_result, gr.update(visible=True), gr.update(visible=True), gr.update(visible=True)
 
 #from utils import get_tags_for_prompts, get_mubert_tags_embeddings, get_pat
 
@@ -44,8 +44,8 @@ def get_pat_token():
                        "params": {
                            "email":"mail@mail.com",
                            "phone":"+11234567890",
-                           "license": MUBERT_LICENSE,
-                           "token": MUBERT_TOKEN,
+                           "license": str(MUBERT_LICENSE),
+                           "token": str(MUBERT_TOKEN),
                            
                        }
                    })
@@ -65,7 +65,7 @@ def get_music(pat, prompt, track_duration, gen_intensity, gen_mode):
                        "params":
                            {
                                 "text":prompt,
-                                "pat":pat,
+                                "pat": "aW1ndG9tdXNpYy4xNzA4Nzg5MS40ZGIxNGM0YjM2NDY4ZDM2OWQ3ZjQ4NTg1NmNiNjg0N2NmYjJmMDZhLjEuMw",
                                 "mode":"track",
                                 "duration":track_duration, 
                                 "bitrate":"192" 
