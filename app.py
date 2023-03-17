@@ -59,7 +59,7 @@ def get_pat_token():
 
 def get_music(prompt, track_duration, gen_intensity, gen_mode):
     
-    r = httpx.post('https://api-b2b.mubert.com/v2/GetServiceAccess',
+    r = httpx.post('https://api-b2b.mubert.com/v2/TTMRecordTrack',
                    json={
                        "method": "TTMRecordTrack",
                        "params":
