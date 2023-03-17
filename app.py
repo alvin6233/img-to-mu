@@ -34,8 +34,8 @@ def get_prompts(uploaded_image, track_duration, gen_intensity, gen_mode):
 
 #from utils import get_tags_for_prompts, get_mubert_tags_embeddings, get_pat
 
-minilm = SentenceTransformer('all-MiniLM-L6-v2')
-mubert_tags_embeddings = get_mubert_tags_embeddings(minilm)
+#minilm = SentenceTransformer('all-MiniLM-L6-v2')
+#mubert_tags_embeddings = get_mubert_tags_embeddings(minilm)
 
 def get_pat_token():
     r = httpx.post('https://api-b2b.mubert.com/v2/GetServiceAccess',
