@@ -27,7 +27,7 @@ def get_prompts(uploaded_image, track_duration, gen_intensity, gen_mode):
   prompt = img_to_text(uploaded_image, 'fast', 4, fn_index=1)[0]
   print(prompt)
   pat = get_pat_token()
-  #music_result = get_music(prompt, track_duration, gen_intensity, gen_mode)
+  music_result = get_music(pat, prompt, track_duration, gen_intensity, gen_mode)
   #music_result = generate_track_by_prompt(pat, prompt, track_duration, gen_intensity, gen_mode)
   #print(pat)
   return pat, gr.update(visible=True), gr.update(visible=True), gr.update(visible=True)
@@ -55,7 +55,7 @@ def get_pat_token():
     #assert rdata['status'] == 1, "probably incorrect e-mail"
     #pat = rdata['data']['pat']
     print(rdata['data']['pat'])
-    return "done"
+    return rdata['data']['pat'] 
 
 def get_music(prompt, track_duration, gen_intensity, gen_mode):
     
@@ -73,7 +73,7 @@ def get_music(prompt, track_duration, gen_intensity, gen_mode):
     })
 
     rdata = json.loads(r.text)
-    print(rdata)
+    print(rdata['data'])
     #assert rdata['status'] == 1, "probably incorrect e-mail"
     #track = rdata['data']['tasks']['download_link']
 
