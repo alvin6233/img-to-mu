@@ -53,9 +53,9 @@ def get_pat_token():
     rdata = json.loads(r.text)
     print(rdata)
     #assert rdata['status'] == 1, "probably incorrect e-mail"
-    pat = rdata['data']['pat']
-    print(pat)
-    return pat
+    #pat = rdata['data']['pat']
+    print(rdata)
+    return rdata
 
 def get_music(pat, prompt, track_duration, gen_intensity, gen_mode):
     
