@@ -13,6 +13,9 @@ import urllib
 from os import path
 from pydub import AudioSegment
 
+MUBERT_LICENSE = os.environ.get('MUBERT_LICENSE')
+MUBERT_TOKEN = os.environ.get('MUBERT_TOKEN')
+
 #img_to_text = gr.Blocks.load(name="spaces/pharma/CLIP-Interrogator")
 img_to_text = gr.Blocks.load(name="spaces/fffiloni/CLIP-Interrogator-2")
 
@@ -32,7 +35,9 @@ from utils import get_tags_for_prompts, get_mubert_tags_embeddings, get_pat
 minilm = SentenceTransformer('all-MiniLM-L6-v2')
 mubert_tags_embeddings = get_mubert_tags_embeddings(minilm)
 
-
+def get_pat_token():
+    return pat
+    
 def get_track_by_tags(tags, pat, duration, gen_intensity, gen_mode, maxit=20):
     
     r = httpx.post('https://api-b2b.mubert.com/v2/RecordTrackTTM',
