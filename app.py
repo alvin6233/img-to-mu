@@ -20,7 +20,7 @@ MUBERT_TOKEN = os.environ.get('MUBERT_TOKEN')
 img_to_text = gr.Blocks.load(name="spaces/fffiloni/CLIP-Interrogator-2")
 
 from share_btn import community_icon_html, loading_icon_html, share_js
-from utils import get_tags_for_prompts, get_mubert_tags_embedding
+from utils import get_tags_for_prompts, get_mubert_tags_embeddings
 minilm = SentenceTransformer('all-MiniLM-L6-v2')
 mubert_tags_embeddings = get_mubert_tags_embeddings(minilm)
 
