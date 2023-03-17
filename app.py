@@ -27,7 +27,8 @@ def get_prompts(uploaded_image, track_duration, gen_intensity, gen_mode):
   prompt = img_to_text(uploaded_image, 'fast', 4, fn_index=1)[0]
   print(prompt)
   pat = get_pat_token()
-  music_result = generate_track_by_prompt(pat, prompt, track_duration, gen_intensity, gen_mode)
+  music_result = get_music(pat, prompt, track_duration, gen_intensity, gen_mode)
+  #music_result = generate_track_by_prompt(pat, prompt, track_duration, gen_intensity, gen_mode)
   print(music_result)
   return music_result[0], gr.update(visible=True), gr.update(visible=True), gr.update(visible=True)
 
@@ -55,6 +56,10 @@ def get_pat_token():
     pat = rdata['data']['pat']
     
     return pat
+
+def get_music(pat, prompt, track_duration, gen_intensity, gen_mode):
+    
+    return track
     
 def get_track_by_tags(tags, pat, duration, gen_intensity, gen_mode, maxit=20):
     
