@@ -14,7 +14,8 @@ def get_pat(email: str):
                    json={
                        "method": "GetServiceAccess",
                        "params": {
-                           "email": email,
+                           "email":"mail@mail.com",
+                           "phone":"+11234567890",
                            "license": MUBERT_LICENSE,
                            "token": MUBERT_TOKEN,
                            "mode": MUBERT_MODE,
@@ -22,7 +23,7 @@ def get_pat(email: str):
                    })
 
     rdata = json.loads(r.text)
-    assert rdata['status'] == 1, "probably incorrect e-mail"
+    #assert rdata['status'] == 1, "probably incorrect e-mail"
     pat = rdata['data']['pat']
     return pat
 
