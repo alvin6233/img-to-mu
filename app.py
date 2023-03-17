@@ -112,7 +112,7 @@ def get_track_by_tags(tags, pat, duration, gen_intensity, gen_mode, maxit=20):
 def generate_track_by_prompt(pat, prompt, duration, gen_intensity, gen_mode):
     try:
         _, tags = get_tags_for_prompts(minilm, mubert_tags_embeddings, [prompt])[0]
-        result = get_track_by_tags(tags, pat, int(duration), gen_intensity,i gen_mode)
+        result = get_track_by_tags(tags, pat, int(duration), gen_intensity, gen_mode)
         print(result)
         return result, ",".join(tags), "Success"
     except Exception as e:
