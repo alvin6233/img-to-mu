@@ -66,7 +66,7 @@ def get_music(pat, prompt, track_duration, gen_intensity, gen_mode):
                        "method": "TTMRecordTrack",
                        "params":
                            {
-                                "text":"jazz music",
+                                "text": prompt,
                                 "pat": pat,
                                 "mode":"track",
                                 "duration":track_duration, 
