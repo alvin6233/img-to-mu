@@ -83,7 +83,7 @@ def get_music(pat, prompt, track_duration, gen_intensity, gen_mode):
     time.sleep(1)
 
     
-    return track
+    return str(track)
     
 def get_track_by_tags(tags, pat, duration, gen_intensity, gen_mode, maxit=20):
     
