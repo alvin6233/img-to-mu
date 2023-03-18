@@ -77,7 +77,7 @@ def get_music(pat, prompt, track_duration, gen_intensity, gen_mode):
     rdata = json.loads(r.text)
     track=rdata['data']['tasks'][0]['download_link']
     print(track)
-    #assert rdata['status'] == 1, "probably incorrect e-mail"
+    assert rdata['status'] == 1, "probably incorrect e-mail"
     #track = rdata['data']['tasks']['download_link']
 
     #print(track)
