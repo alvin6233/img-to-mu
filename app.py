@@ -75,7 +75,7 @@ def get_music(pat, prompt, track_duration, gen_intensity, gen_mode):
     })
 
     rdata = json.loads(r.text)
-    track=rdata['data']['tasks'][0]['download_link']
+    
     #print(track)
     assert rdata['status'] == 1, rdata['error']['text']
     #track = rdata['data']['tasks']['download_link']
@@ -85,6 +85,7 @@ def get_music(pat, prompt, track_duration, gen_intensity, gen_mode):
 
     print('Generating track ', end='')
     for i in range(maxit):
+        track=rdata['data']['tasks'][0]['download_link']
         r = httpx.get(track)
         if r.status_code == 200:
             return track
