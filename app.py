@@ -80,6 +80,9 @@ def get_music(pat, prompt, track_duration, gen_intensity, gen_mode):
     #track = rdata['data']['tasks']['download_link']
 
     #print(track)
+    time.sleep(1)
+
+    
     return track
     
 def get_track_by_tags(tags, pat, duration, gen_intensity, gen_mode, maxit=20):
