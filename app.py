@@ -32,7 +32,8 @@ def get_prompts(uploaded_image, track_duration, gen_intensity, gen_mode):
   pat = get_pat_token()
   music_result = get_music(pat, prompt, track_duration, gen_intensity, gen_mode)
   #music_result = generate_track_by_prompt(pat, prompt, track_duration, gen_intensity, gen_mode)
-  #print(pat)
+  #print(pat
+  time.sleep(1)
   return music_result, gr.update(visible=True), gr.update(visible=True), gr.update(visible=True)
 
 
@@ -80,7 +81,7 @@ def get_music(pat, prompt, track_duration, gen_intensity, gen_mode):
     #track = rdata['data']['tasks']['download_link']
 
     #print(track)
-    time.sleep(1)
+    time.sleep(2)
 
     
     return str(track)
