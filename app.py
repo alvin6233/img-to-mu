@@ -185,7 +185,7 @@ with gr.Blocks(css="style.css") as demo:
     
         input_img = gr.Image(type="filepath", elem_id="input-img")
         music_output = gr.Audio(label="Result", type="filepath", elem_id="music-output").style(height="5rem")
-        text_status = gr.Textbox(label="status")
+        #text_status = gr.Textbox(label="status")
         with gr.Group(elem_id="share-btn-container"):
             community_icon = gr.HTML(community_icon_html, visible=False)
             loading_icon = gr.HTML(loading_icon_html, visible=False)
@@ -201,7 +201,7 @@ with gr.Blocks(css="style.css") as demo:
 
         gr.HTML(article)
     
-    generate.click(get_prompts, inputs=[input_img,track_duration,gen_intensity,gen_mode], outputs=[text_status, share_button, community_icon, loading_icon], api_name="i2m")
+    generate.click(get_prompts, inputs=[input_img,track_duration,gen_intensity,gen_mode], outputs=[music_output, share_button, community_icon, loading_icon], api_name="i2m")
     share_button.click(None, [], [], _js=share_js)
 
 demo.queue(max_size=32, concurrency_count=20).launch()
