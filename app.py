@@ -84,7 +84,7 @@ def get_music(pat, prompt, track_duration, gen_intensity, gen_mode):
     time.sleep(2)
 
     print('Generating track ', end='')
-    for i in range(maxit):
+    for i in range(20):
         track=rdata['data']['tasks'][0]['download_link']
         r = httpx.get(track)
         if r.status_code == 200:
