@@ -27,11 +27,11 @@ mubert_tags_embeddings = get_mubert_tags_embeddings(minilm)
 def get_prompts(uploaded_image, track_duration, gen_intensity, gen_mode):
   print("calling clip interrogator")
   #prompt = img_to_text(uploaded_image, "ViT-L (best for Stable Diffusion 1.*)", "fast", fn_index=1)[0]
-  prompt = img_to_text(uploaded_image, 'fast', 4, fn_index=1)[0]
+  prompt = img_to_text(uploaded_image, 'best', 4, fn_index=1)[0]
   print(prompt)
   pat = get_pat_token()
-  #music_result = get_music(pat, prompt, track_duration, gen_intensity, gen_mode)
-  music_result = generate_track_by_prompt(pat, prompt, track_duration, gen_intensity, gen_mode)
+  music_result = get_music(pat, prompt, track_duration, gen_intensity, gen_mode)
+  #music_result = generate_track_by_prompt(pat, prompt, track_duration, gen_intensity, gen_mode)
   #print(pat)
   return music_result, gr.update(visible=True), gr.update(visible=True), gr.update(visible=True)
 
