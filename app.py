@@ -55,7 +55,7 @@ def get_pat_token():
 
     rdata = json.loads(r.text)
     #print(rdata)
-    #assert rdata['status'] == 1, "probably incorrect e-mail"
+    assert rdata['status'] == 1, "probably incorrect e-mail"
     #pat = rdata['data']['pat']
     print(rdata['data']['pat'])
     return rdata['data']['pat'] 
@@ -76,15 +76,21 @@ def get_music(pat, prompt, track_duration, gen_intensity, gen_mode):
 
     rdata = json.loads(r.text)
     track=rdata['data']['tasks'][0]['download_link']
-    print(track)
-    assert rdata['status'] == 1, "probably incorrect e-mail"
+    #print(track)
+    assert rdata['status'] == 1, rdata['error']['text']
     #track = rdata['data']['tasks']['download_link']
 
-    #print(track)
+    print(rdata)
     time.sleep(2)
 
+    print('Generating track ', end='')
+    for i in range(maxit):
+        r = httpx.get(track)
+        if r.status_code == 200:
+            return track
+        time.sleep(1)
     
-    return str(track)
+    
     
 def get_track_by_tags(tags, pat, duration, gen_intensity, gen_mode, maxit=20):
     
