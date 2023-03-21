@@ -169,7 +169,7 @@ def try_api(message, openai_api_key):
 
 def call_api(message, openai_api_key):
 
-    instruction = "Convert in less than 200 characters this image caption to a very concise musical description with musical terms, as if you wanted to describe a musical ambiance"
+    instruction = "Convert in less than 200 characters this image caption to a very concise musical description with musical terms, as if you wanted to describe a musical ambiance, stricly in English"
           
     print("starting open ai")
     augmented_prompt = f"{instruction}: '{message}'."
