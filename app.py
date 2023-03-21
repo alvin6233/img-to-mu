@@ -121,7 +121,7 @@ def get_prompts(uploaded_image, track_duration, gen_intensity, gen_mode, openai_
     #wave_file = convert_mp3_to_wav(music_result[1])
     
     time.sleep(1)
-    return gr.update(value=music_result[1], info=music_result[2]), gr.update(visible=True), gr.update(visible=True), gr.update(visible=True)
+    return music_result[1],music_result[2], gr.update(visible=True), gr.update(visible=True), gr.update(visible=True)
 
 def try_api(message, openai_api_key):
 
@@ -275,6 +275,7 @@ with gr.Blocks(css="style.css") as demo:
     
         input_img = gr.Image(type="filepath", elem_id="input-img")
         music_output = gr.Audio(label="Result", type="filepath", elem_id="music-output").style(height="5rem")
+        music_url = gr.Textbox(info="If player do not work, try to copy/paste the link in a new browser window")
         #text_status = gr.Textbox(label="status")
         with gr.Group(elem_id="share-btn-container"):
             community_icon = gr.HTML(community_icon_html, visible=False)
@@ -292,7 +293,7 @@ with gr.Blocks(css="style.css") as demo:
 
         gr.HTML(article)
     
-    generate.click(get_prompts, inputs=[input_img,track_duration,gen_intensity,gen_mode, openai_api_key], outputs=[music_output, share_button, community_icon, loading_icon], api_name="i2m")
+    generate.click(get_prompts, inputs=[input_img,track_duration,gen_intensity,gen_mode, openai_api_key], outputs=[music_output, music_url, share_button, community_icon, loading_icon], api_name="i2m")
     share_button.click(None, [], [], _js=share_js)
 
 demo.queue(max_size=32, concurrency_count=20).launch()
