@@ -118,7 +118,7 @@ def get_prompts(uploaded_image, track_duration, gen_intensity, gen_mode, openai_
             musical_prompt = prompt
     music_result = get_results(musical_prompt, track_duration, gen_intensity, gen_mode)
     
-    wave_file = convert_mp3_to_wav(music_result[1])
+    wave_file = convert_mp3_to_wav(music_result)
     
     time.sleep(1)
     return wave_file, gr.update(visible=True), gr.update(visible=True), gr.update(visible=True)
