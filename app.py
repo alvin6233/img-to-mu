@@ -118,7 +118,7 @@ def get_prompts(uploaded_image, track_duration, gen_intensity, gen_mode, openai_
             musical_prompt = prompt
     music_result = get_results(musical_prompt, track_duration, gen_intensity, gen_mode)
     
-    wave_file = convert_mp3_to_wav(music_result)
+    wave_file = convert_mp3_to_wav("sample.mp3")
     
     time.sleep(1)
     return wave_file, gr.update(visible=True), gr.update(visible=True), gr.update(visible=True)
@@ -159,7 +159,7 @@ def try_api(message, openai_api_key):
 
 def call_api(message, openai_api_key):
 
-    instruction = "Convert this image description in a very concise way with musical terms as if you wanted to translate it to music, less than 200 characters"
+    instruction = "Convert this image description in a very concise way with musical terms, as if you wanted to describe a music that would fit this image, with less than 200 characters"
           
     print("starting open ai")
     augmented_prompt = f"{instruction}: '{message}'."
