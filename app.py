@@ -72,7 +72,7 @@ def get_music(pat, prompt, track_duration, gen_intensity, gen_mode):
 
     rdata = json.loads(r.text)
     
-    print(f"rdata: {rdata}")
+    #print(f"rdata: {rdata}")
     assert rdata['status'] == 1, rdata['error']['text']
     track = rdata['data']['tasks'][0]['download_link']
     print(track)
@@ -92,7 +92,7 @@ def get_music(pat, prompt, track_duration, gen_intensity, gen_mode):
         retries -= 1
         time.sleep(delay)
     response = requests.get(track, headers=headers)
-    #print(f"{response}")
+    print(f"{response}")
     # Save the downloaded content to a local file
     with open(local_file_path, 'wb') as f:
         f.write(response.content)
@@ -295,7 +295,7 @@ with gr.Blocks(css="style.css") as demo:
 
         with gr.Accordion(label="Music Generation Options", open=False):
             openai_api_key = gr.Textbox(type="password", label="🔐 Your OpenAI API Key (optional)", placeholder="sk-123abc...", info="You can use your OpenAI key to adapt CLIP Interrogator caption to a musical translation.")
-            track_duration = gr.Slider(minimum=20, maximum=120, value=30, step=5, label="Track duration", elem_id="duration-inp")
+            track_duration = gr.Slider(minimum=20, maximum=120, value=42, ustep=5, label="Track duration", elem_id="duration-inp")
             with gr.Row():
                 gen_intensity = gr.Dropdown(choices=["low", "medium", "high"], value="medium", label="Intensity")
                 gen_mode = gr.Radio(label="mode", choices=["track", "loop"], value="loop")
