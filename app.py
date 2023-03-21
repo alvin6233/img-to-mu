@@ -54,7 +54,7 @@ def get_pat_token():
 def get_music(pat, prompt, track_duration, gen_intensity, gen_mode):
 
     if len(prompt) > 200:
-    prompt = prompt[:200]
+        prompt = prompt[:200]
     
     r = httpx.post('https://api-b2b.mubert.com/v2/TTMRecordTrack',
                    json={
