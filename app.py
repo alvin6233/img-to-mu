@@ -121,7 +121,7 @@ def get_prompts(uploaded_image, track_duration, gen_intensity, gen_mode, openai_
     #wave_file = convert_mp3_to_wav(music_result[1])
     
     time.sleep(1)
-    return gr.update.Audio(value=music_result[1], info=music_result[2]), gr.update(visible=True), gr.update(visible=True), gr.update(visible=True)
+    return gr.update(value=music_result[1], info=music_result[2]), gr.update(visible=True), gr.update(visible=True), gr.update(visible=True)
 
 def try_api(message, openai_api_key):
 
