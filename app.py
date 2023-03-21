@@ -115,6 +115,7 @@ def get_prompts(uploaded_image, track_duration, gen_intensity, gen_mode, openai_
         gpt_adaptation = try_api(prompt, openai_api_key)
         if gpt_adaptation[0] != "oups":
             musical_prompt = gpt_adaptation[0]
+            print(f"misical adapt: {musical_prompt}")
             music_result = get_results(musical_prompt, track_duration, gen_intensity, gen_mode)
         else:
             music_result = get_results(prompt, track_duration, gen_intensity, gen_mode)
