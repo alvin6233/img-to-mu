@@ -282,7 +282,7 @@ with gr.Blocks(css="style.css") as demo:
             share_button = gr.Button("Share to community", elem_id="share-btn", visible=False)
 
         with gr.Accordion(label="Music Generation Options", open=False):
-            openai_api_key = gr.Textbox(label="OpenAI key", info="You can use your OpenAI key to adapt CLIP Interrogator caption to a musical translation.")
+            openai_api_key = gr.Textbox(type="password", label="🔐 Your OpenAI API Key (optional)", placeholder="sk-123abc...", info="You can use your OpenAI key to adapt CLIP Interrogator caption to a musical translation.")
             track_duration = gr.Slider(minimum=20, maximum=120, value=30, step=5, label="Track duration", elem_id="duration-inp")
             with gr.Row():
                 gen_intensity = gr.Dropdown(choices=["low", "medium", "high"], value="medium", label="Intensity")
