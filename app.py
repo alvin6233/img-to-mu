@@ -1,15 +1,16 @@
+import gradio as gr
+import numpy as np
 import time
 import base64
-import gradio as gr
+import ffmpeg
 from sentence_transformers import SentenceTransformer
-
+from audio2numpy import open_audio
 import httpx
 import json
-
 import os
 import requests
 import urllib
-
+import pydub
 from os import path
 from pydub import AudioSegment
 
@@ -21,25 +22,16 @@ img_to_text = gr.Blocks.load(name="spaces/fffiloni/CLIP-Interrogator-2")
 
 from share_btn import community_icon_html, loading_icon_html, share_js
 from utils import get_tags_for_prompts, get_mubert_tags_embeddings
+
 minilm = SentenceTransformer('all-MiniLM-L6-v2')
 mubert_tags_embeddings = get_mubert_tags_embeddings(minilm)
 
-def get_prompts(uploaded_image, track_duration, gen_intensity, gen_mode):
-  print("calling clip interrogator")
-  #prompt = img_to_text(uploaded_image, "ViT-L (best for Stable Diffusion 1.*)", "fast", fn_index=1)[0]
-  prompt = img_to_text(uploaded_image, 'best', 4, fn_index=1)[0]
-  print(prompt)
-  pat = get_pat_token()
-  music_result = get_music(pat, prompt, track_duration, gen_intensity, gen_mode)
-  #music_result = generate_track_by_prompt(pat, prompt, track_duration, gen_intensity, gen_mode)
-  #print(pat
-  time.sleep(1)
-  return music_result, gr.update(visible=True), gr.update(visible=True), gr.update(visible=True)
+##————————————————————————————————————
 
+MUBERT_LICENSE = os.environ.get('MUBERT_LICENSE')
+MUBERT_TOKEN = os.environ.get('MUBERT_TOKEN')
 
-
-
-
+##————————————————————————————————————
 def get_pat_token():
     r = httpx.post('https://api-b2b.mubert.com/v2/GetServiceAccess',
                    json={
@@ -54,11 +46,10 @@ def get_pat_token():
                    })
 
     rdata = json.loads(r.text)
-    #print(rdata)
     assert rdata['status'] == 1, "probably incorrect e-mail"
-    #pat = rdata['data']['pat']
-    print(rdata['data']['pat'])
-    return rdata['data']['pat'] 
+    pat = rdata['data']['pat']
+    print(f"pat: {pat}")
+    return pat
 
 def get_music(pat, prompt, track_duration, gen_intensity, gen_mode):
     
@@ -69,32 +60,59 @@ def get_music(pat, prompt, track_duration, gen_intensity, gen_mode):
                            {
                                 "text": prompt,
                                 "pat": pat,
-                                "mode":"track",
+                                "mode":gen_mode,
                                 "duration":track_duration, 
+                                "intensity": gen_intensity
                            }
     })
 
     rdata = json.loads(r.text)
     
-    #print(track)
+    print(f"rdata: {rdata}")
     assert rdata['status'] == 1, rdata['error']['text']
-    #track = rdata['data']['tasks']['download_link']
+    track = rdata['data']['tasks'][0]['download_link']
+    print(track)
+    
+    local_file_path = "sample.mp3"
 
-    print(rdata)
-    time.sleep(2)
-    track=rdata['data']['tasks'][0]['download_link']
-    return track
-    
-    #print('Generating track ', end='')
-    #for i in range(20):
-        
-    #    r = httpx.get(track)
-    #    if r.status_code == 200:
-    #        return track
-    #    time.sleep(1)
-    
-    
-    
+    # Download the MP3 file from the URL
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7; rv:93.0) Gecko/20100101 Firefox/93.0'}
+
+    retries = 3
+    delay = 5  # in seconds
+    while retries > 0:
+        response = requests.get(track, headers=headers)
+        if response.status_code == 200:
+            break
+        retries -= 1
+        time.sleep(delay)
+    response = requests.get(track, headers=headers)
+    print(f"{response}")
+    # Save the downloaded content to a local file
+    with open(local_file_path, 'wb') as f:
+        f.write(response.content)
+        return "sample.mp3"
+   
+
+def get_results(text_prompt,track_duration,gen_intensity,gen_mode):
+    pat_token = get_pat_token()
+    music = get_music(pat_token, text_prompt, track_duration, gen_intensity, gen_mode)
+    return pat_token, music
+
+def get_prompts(uploaded_image, track_duration, gen_intensity, gen_mode):
+    print("calling clip interrogator")
+    #prompt = img_to_text(uploaded_image, "ViT-L (best for Stable Diffusion 1.*)", "fast", fn_index=1)[0]
+    prompt = img_to_text(uploaded_image, 'best', 4, fn_index=1)[0]
+    print(prompt)
+    music_result = get_results(prompt, track_duration, gen_intensity, gen_mode)
+    wave_file = convert_mp3_to_wav(music_result[1])
+    #music_result = generate_track_by_prompt(pat, prompt, track_duration, gen_intensity, gen_mode)
+    #print(pat
+    time.sleep(1)
+    return wave_file, gr.update(visible=True), gr.update(visible=True), gr.update(visible=True)
+
+   
 def get_track_by_tags(tags, pat, duration, gen_intensity, gen_mode, maxit=20):
     
     r = httpx.post('https://api-b2b.mubert.com/v2/RecordTrackTTM',
