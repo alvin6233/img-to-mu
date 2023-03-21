@@ -92,7 +92,7 @@ def get_music(pat, prompt, track_duration, gen_intensity, gen_mode):
         retries -= 1
         time.sleep(delay)
     response = requests.get(track, headers=headers)
-    print(f"{response}")
+    #print(f"{response}")
     # Save the downloaded content to a local file
     with open(local_file_path, 'wb') as f:
         f.write(response.content)
@@ -118,6 +118,8 @@ def get_prompts(uploaded_image, track_duration, gen_intensity, gen_mode, openai_
             music_result = get_results(musical_prompt, track_duration, gen_intensity, gen_mode)
         else:
             music_result = get_results(prompt, track_duration, gen_intensity, gen_mode)
+    else:
+        music_result = get_results(prompt, track_duration, gen_intensity, gen_mode)
     
     show_prompts = f"""
         CLIP Interrogator Caption: '{prompt}'
@@ -183,7 +185,7 @@ def call_api(message, openai_api_key):
         presence_penalty=0.6
     )
 
-    print(response)
+    #print(response)
 
     #return str(response.choices[0].text).split("\n",2)[2]
     return str(response.choices[0].text).lstrip('\n')  
@@ -305,4 +307,4 @@ with gr.Blocks(css="style.css") as demo:
     generate.click(get_prompts, inputs=[input_img,track_duration,gen_intensity,gen_mode, openai_api_key], outputs=[prompts_out, music_output, share_button, community_icon, loading_icon], api_name="i2m")
     share_button.click(None, [], [], _js=share_js)
 
-demo.queue(max_size=32, concurrency_count=20).launch()
+demo.queue(max_size=32).launch()
