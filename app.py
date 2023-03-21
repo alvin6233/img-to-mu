@@ -96,13 +96,13 @@ def get_music(pat, prompt, track_duration, gen_intensity, gen_mode):
     # Save the downloaded content to a local file
     with open(local_file_path, 'wb') as f:
         f.write(response.content)
-        return "sample.mp3"
+        return "sample.mp3", track
    
 
 def get_results(text_prompt,track_duration,gen_intensity,gen_mode):
     pat_token = get_pat_token()
     music = get_music(pat_token, text_prompt, track_duration, gen_intensity, gen_mode)
-    return pat_token, music
+    return pat_token, music[0], music[1]
 
 def get_prompts(uploaded_image, track_duration, gen_intensity, gen_mode, openai_api_key):
     print("calling clip interrogator")
@@ -121,7 +121,7 @@ def get_prompts(uploaded_image, track_duration, gen_intensity, gen_mode, openai_
     #wave_file = convert_mp3_to_wav(music_result[1])
     
     time.sleep(1)
-    return music_result[1], gr.update(visible=True), gr.update(visible=True), gr.update(visible=True)
+    return gr.update.Audio(value=music_result[1], info=music_result[2]), gr.update(visible=True), gr.update(visible=True), gr.update(visible=True)
 
 def try_api(message, openai_api_key):
 
