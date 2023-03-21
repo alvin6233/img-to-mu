@@ -275,7 +275,7 @@ with gr.Blocks(css="style.css") as demo:
     
         input_img = gr.Image(type="filepath", elem_id="input-img")
         music_output = gr.Audio(label="Result", type="filepath", elem_id="music-output").style(height="5rem")
-        music_url = gr.Textbox(info="If player do not work, try to copy/paste the link in a new browser window")
+        music_url = gr.Textbox(max_lines=1, info="If player do not work, try to copy/paste the link in a new browser window")
         #text_status = gr.Textbox(label="status")
         with gr.Group(elem_id="share-btn-container"):
             community_icon = gr.HTML(community_icon_html, visible=False)
