@@ -157,9 +157,11 @@ def try_api(message, openai_api_key):
         return "oups", f"<span class='openai_error'>OpenAI API request exceeded rate limit: <br />{e}</span>"
 
 def call_api(message, openai_api_key):
+
+    instruction = "Convert this image description in a very concise way with musical terms as if you wanted to translate it to music, less than 200 characters"
           
     print("starting open ai")
-    augmented_prompt = message + prevent_code_gen
+    augmented_prompt = f"{instruction}: '{message}'."
     openai.api_key = openai_api_key
     
     response = openai.Completion.create(
