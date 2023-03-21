@@ -118,7 +118,7 @@ def get_prompts(uploaded_image, track_duration, gen_intensity, gen_mode, openai_
             musical_prompt = prompt
     music_result = get_results(musical_prompt, track_duration, gen_intensity, gen_mode)
     
-    wave_file = convert_mp3_to_wav("sample.mp3")
+    wave_file = convert_mp3_to_wav(music_result)
     
     time.sleep(1)
     return wave_file, gr.update(visible=True), gr.update(visible=True), gr.update(visible=True)
@@ -159,7 +159,7 @@ def try_api(message, openai_api_key):
 
 def call_api(message, openai_api_key):
 
-    instruction = "Convert this image description in a very concise way with musical terms, as if you wanted to describe a music that would fit this image, with less than 200 characters"
+    instruction = "Convert in less than 200 characters this image caption to a very concise musical description with musical terms, as if you wanted to describe a musical ambiance"
           
     print("starting open ai")
     augmented_prompt = f"{instruction}: '{message}'."
@@ -220,18 +220,9 @@ def generate_track_by_prompt(pat, prompt, duration, gen_intensity, gen_mode):
 
 def convert_mp3_to_wav(mp3_filepath):
  
-  url = mp3_filepath
-  save_as = "file.mp3"
-  
-  data = urllib.request.urlopen(url)
-
-  f = open(save_as,'wb')
-  f.write(data.read())
-  f.close()
-  
   wave_file="file.wav"
   
-  sound = AudioSegment.from_mp3(save_as)
+  sound = mp3_filepath
   sound.export(wave_file, format="wav")
   
   return wave_file
