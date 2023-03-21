@@ -52,6 +52,9 @@ def get_pat_token():
     return pat
 
 def get_music(pat, prompt, track_duration, gen_intensity, gen_mode):
+
+    if len(prompt) > 200:
+    prompt = prompt[:200]
     
     r = httpx.post('https://api-b2b.mubert.com/v2/TTMRecordTrack',
                    json={
@@ -100,19 +103,81 @@ def get_results(text_prompt,track_duration,gen_intensity,gen_mode):
     music = get_music(pat_token, text_prompt, track_duration, gen_intensity, gen_mode)
     return pat_token, music
 
-def get_prompts(uploaded_image, track_duration, gen_intensity, gen_mode):
+def get_prompts(uploaded_image, track_duration, gen_intensity, gen_mode, openai_api_key):
     print("calling clip interrogator")
     #prompt = img_to_text(uploaded_image, "ViT-L (best for Stable Diffusion 1.*)", "fast", fn_index=1)[0]
+    
     prompt = img_to_text(uploaded_image, 'best', 4, fn_index=1)[0]
     print(prompt)
-    music_result = get_results(prompt, track_duration, gen_intensity, gen_mode)
+    if openai_api_key != None:
+        gpt_adaptation = try_api(prompt, openai_api_key)
+        if gpt_adaptation[0] != "oups":
+            musical_prompt = gpt_adaptation[0]
+        else:
+            musical_prompt = prompt
+    music_result = get_results(musical_prompt, track_duration, gen_intensity, gen_mode)
+    
     wave_file = convert_mp3_to_wav(music_result[1])
-    #music_result = generate_track_by_prompt(pat, prompt, track_duration, gen_intensity, gen_mode)
-    #print(pat
+    
     time.sleep(1)
     return wave_file, gr.update(visible=True), gr.update(visible=True), gr.update(visible=True)
 
-   
+def try_api(message, openai_api_key):
+
+    try:
+        response = call_api(message, openai_api_key)
+        return response, "<span class='openai_clear'>no error</span>"
+    except openai.error.Timeout as e:
+        #Handle timeout error, e.g. retry or log
+        print(f"OpenAI API request timed out: {e}")
+        return "oups", f"<span class='openai_error'>OpenAI API request timed out: <br />{e}</span>"
+    except openai.error.APIError as e:
+        #Handle API error, e.g. retry or log
+        print(f"OpenAI API returned an API Error: {e}")
+        return "oups", f"<span class='openai_error'>OpenAI API returned an API Error: <br />{e}</span>"
+    except openai.error.APIConnectionError as e:
+        #Handle connection error, e.g. check network or log
+        print(f"OpenAI API request failed to connect: {e}")
+        return "oups", f"<span class='openai_error'>OpenAI API request failed to connect: <br />{e}</span>"
+    except openai.error.InvalidRequestError as e:
+        #Handle invalid request error, e.g. validate parameters or log
+        print(f"OpenAI API request was invalid: {e}")
+        return "oups", f"<span class='openai_error'>OpenAI API request was invalid: <br />{e}</span>"
+    except openai.error.AuthenticationError as e:
+        #Handle authentication error, e.g. check credentials or log
+        print(f"OpenAI API request was not authorized: {e}")
+        return "oups", f"<span class='openai_error'>OpenAI API request was not authorized: <br />{e}</span>"
+    except openai.error.PermissionError as e:
+        #Handle permission error, e.g. check scope or log
+        print(f"OpenAI API request was not permitted: {e}")
+        return "oups", f"<span class='openai_error'>OpenAI API request was not permitted: <br />{e}</span>"
+    except openai.error.RateLimitError as e:
+        #Handle rate limit error, e.g. wait or log
+        print(f"OpenAI API request exceeded rate limit: {e}")
+        return "oups", f"<span class='openai_error'>OpenAI API request exceeded rate limit: <br />{e}</span>"
+
+def call_api(message, openai_api_key):
+          
+    print("starting open ai")
+    augmented_prompt = message + prevent_code_gen
+    openai.api_key = openai_api_key
+    
+    response = openai.Completion.create(
+        model="text-davinci-003",
+        prompt=augmented_prompt,
+        temperature=0.5,
+        max_tokens=2048,
+        top_p=1,
+        frequency_penalty=0,
+        presence_penalty=0.6
+    )
+
+    print(response)
+
+    #return str(response.choices[0].text).split("\n",2)[2]
+    return str(response.choices[0].text)   
+
+
 def get_track_by_tags(tags, pat, duration, gen_intensity, gen_mode, maxit=20):
     
     r = httpx.post('https://api-b2b.mubert.com/v2/RecordTrackTTM',
@@ -223,16 +288,17 @@ with gr.Blocks(css="style.css") as demo:
             share_button = gr.Button("Share to community", elem_id="share-btn", visible=False)
 
         with gr.Accordion(label="Music Generation Options", open=False):
+            openai_api_key = gr.Textbox(label="OpenAI key", info="You can use you OpenAI key to adapt CLIP Interrogator caption to a musical translation.")
             track_duration = gr.Slider(minimum=20, maximum=120, value=30, step=5, label="Track duration", elem_id="duration-inp")
             with gr.Row():
                 gen_intensity = gr.Dropdown(choices=["low", "medium", "high"], value="medium", label="Intensity")
-                gen_mode = gr.Radio(label="mode", choices=["track", "loop"], value="track")
+                gen_mode = gr.Radio(label="mode", choices=["track", "loop"], value="loop")
         
         generate = gr.Button("Generate Music from Image")
 
         gr.HTML(article)
     
-    generate.click(get_prompts, inputs=[input_img,track_duration,gen_intensity,gen_mode], outputs=[music_output, share_button, community_icon, loading_icon], api_name="i2m")
+    generate.click(get_prompts, inputs=[input_img,track_duration,gen_intensity,gen_mode, openai_api_key], outputs=[music_output, share_button, community_icon, loading_icon], api_name="i2m")
     share_button.click(None, [], [], _js=share_js)
 
 demo.queue(max_size=32, concurrency_count=20).launch()
