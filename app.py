@@ -110,18 +110,25 @@ def get_prompts(uploaded_image, track_duration, gen_intensity, gen_mode, openai_
     
     prompt = img_to_text(uploaded_image, 'best', 4, fn_index=1)[0]
     print(prompt)
+    musical_prompt = 'None'
     if openai_api_key != None:
         gpt_adaptation = try_api(prompt, openai_api_key)
         if gpt_adaptation[0] != "oups":
             musical_prompt = gpt_adaptation[0]
+            music_result = get_results(musical_prompt, track_duration, gen_intensity, gen_mode)
         else:
-            musical_prompt = prompt
-    music_result = get_results(musical_prompt, track_duration, gen_intensity, gen_mode)
+            music_result = get_results(prompt, track_duration, gen_intensity, gen_mode)
     
+    show_prompts = f"""
+        CLIP Interrogator Caption: '{prompt}'
+        —
+        OpenAI Musical Adaptation: '{musical_prompt}'
+        
+    """
     #wave_file = convert_mp3_to_wav(music_result[1])
     
     time.sleep(1)
-    return music_result[1],music_result[2], gr.update(visible=True), gr.update(visible=True), gr.update(visible=True)
+    return show_prompts, music_result[1],music_result[2], gr.update(visible=True), gr.update(visible=True), gr.update(visible=True)
 
 def try_api(message, openai_api_key):
 
@@ -274,6 +281,7 @@ with gr.Blocks(css="style.css") as demo:
             </div>""")
     
         input_img = gr.Image(type="filepath", elem_id="input-img")
+        prompts_out = gr.Textbox(label="Captions")
         music_output = gr.Audio(label="Result", type="filepath", elem_id="music-output").style(height="5rem")
         music_url = gr.Textbox(max_lines=1, info="If player do not work, try to copy/paste the link in a new browser window")
         #text_status = gr.Textbox(label="status")
@@ -293,7 +301,7 @@ with gr.Blocks(css="style.css") as demo:
 
         gr.HTML(article)
     
-    generate.click(get_prompts, inputs=[input_img,track_duration,gen_intensity,gen_mode, openai_api_key], outputs=[music_output, music_url, share_button, community_icon, loading_icon], api_name="i2m")
+    generate.click(get_prompts, inputs=[input_img,track_duration,gen_intensity,gen_mode, openai_api_key], outputs=[prompts_out, music_output, music_url, share_button, community_icon, loading_icon], api_name="i2m")
     share_button.click(None, [], [], _js=share_js)
 
 demo.queue(max_size=32, concurrency_count=20).launch()
