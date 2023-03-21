@@ -296,7 +296,7 @@ with gr.Blocks(css="style.css") as demo:
 
         with gr.Accordion(label="Music Generation Options", open=False):
             openai_api_key = gr.Textbox(type="password", label="🔐 Your OpenAI API Key (optional)", placeholder="sk-123abc...", info="You can use your OpenAI key to adapt CLIP Interrogator caption to a musical translation.")
-            track_duration = gr.Slider(minimum=20, maximum=120, value=42, ustep=5, label="Track duration", elem_id="duration-inp")
+            track_duration = gr.Slider(minimum=20, maximum=120, value=55, ustep=5, label="Track duration", elem_id="duration-inp")
             with gr.Row():
                 gen_intensity = gr.Dropdown(choices=["low", "medium", "high"], value="medium", label="Intensity")
                 gen_mode = gr.Radio(label="mode", choices=["track", "loop"], value="loop")
