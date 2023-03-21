@@ -178,7 +178,7 @@ def call_api(message, openai_api_key):
     print(response)
 
     #return str(response.choices[0].text).split("\n",2)[2]
-    return str(response.choices[0].text)   
+    return str(response.choices[0].text).lstrip('\n')  
 
 
 def get_track_by_tags(tags, pat, duration, gen_intensity, gen_mode, maxit=20):
@@ -222,7 +222,7 @@ def convert_mp3_to_wav(mp3_filepath):
  
   wave_file="file.wav"
   
-  sound = mp3_filepath
+  sound = AudioSegment.from_mp3(mp3_filepath)
   sound.export(wave_file, format="wav")
   
   return wave_file
