@@ -83,7 +83,7 @@ def get_music(pat, prompt, track_duration, gen_intensity, gen_mode):
     headers = {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7; rv:93.0) Gecko/20100101 Firefox/93.0'}
 
-    retries = 3
+    retries = 5
     delay = 5  # in seconds
     while retries > 0:
         response = requests.get(track, headers=headers)
@@ -140,31 +140,31 @@ def try_api(message, openai_api_key):
         return response, "<span class='openai_clear'>no error</span>"
     except openai.error.Timeout as e:
         #Handle timeout error, e.g. retry or log
-        print(f"OpenAI API request timed out: {e}")
+        #print(f"OpenAI API request timed out: {e}")
         return "oups", f"<span class='openai_error'>OpenAI API request timed out: <br />{e}</span>"
     except openai.error.APIError as e:
         #Handle API error, e.g. retry or log
-        print(f"OpenAI API returned an API Error: {e}")
+        #print(f"OpenAI API returned an API Error: {e}")
         return "oups", f"<span class='openai_error'>OpenAI API returned an API Error: <br />{e}</span>"
     except openai.error.APIConnectionError as e:
         #Handle connection error, e.g. check network or log
-        print(f"OpenAI API request failed to connect: {e}")
+        #print(f"OpenAI API request failed to connect: {e}")
         return "oups", f"<span class='openai_error'>OpenAI API request failed to connect: <br />{e}</span>"
     except openai.error.InvalidRequestError as e:
         #Handle invalid request error, e.g. validate parameters or log
-        print(f"OpenAI API request was invalid: {e}")
+        #print(f"OpenAI API request was invalid: {e}")
         return "oups", f"<span class='openai_error'>OpenAI API request was invalid: <br />{e}</span>"
     except openai.error.AuthenticationError as e:
         #Handle authentication error, e.g. check credentials or log
-        print(f"OpenAI API request was not authorized: {e}")
+        #print(f"OpenAI API request was not authorized: {e}")
         return "oups", f"<span class='openai_error'>OpenAI API request was not authorized: <br />{e}</span>"
     except openai.error.PermissionError as e:
         #Handle permission error, e.g. check scope or log
-        print(f"OpenAI API request was not permitted: {e}")
+        #print(f"OpenAI API request was not permitted: {e}")
         return "oups", f"<span class='openai_error'>OpenAI API request was not permitted: <br />{e}</span>"
     except openai.error.RateLimitError as e:
         #Handle rate limit error, e.g. wait or log
-        print(f"OpenAI API request exceeded rate limit: {e}")
+        #print(f"OpenAI API request exceeded rate limit: {e}")
         return "oups", f"<span class='openai_error'>OpenAI API request exceeded rate limit: <br />{e}</span>"
 
 def call_api(message, openai_api_key):
