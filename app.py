@@ -129,7 +129,7 @@ def get_prompts(uploaded_image, track_duration, gen_intensity, gen_mode, openai_
     #wave_file = convert_mp3_to_wav(music_result[1])
     
     time.sleep(1)
-    return show_prompts, music_result[1], gr.update(visible=True), gr.update(visible=True), gr.update(visible=True)
+    return gr.Textbox.update(value=show_prompts, visible=True), music_result[1], gr.update(visible=True), gr.update(visible=True), gr.update(visible=True)
 
 def try_api(message, openai_api_key):
 
@@ -282,7 +282,7 @@ with gr.Blocks(css="style.css") as demo:
             </div>""")
     
         input_img = gr.Image(type="filepath", elem_id="input-img")
-        prompts_out = gr.Textbox(label="Text Captions", info="If player do not work, try to copy/paste the link in a new browser window")
+        prompts_out = gr.Textbox(label="Text Captions", visible=False, info="If player do not work, try to copy/paste the link in a new browser window")
         music_output = gr.Audio(label="Result", type="filepath", elem_id="music-output").style(height="5rem")
         #music_url = gr.Textbox(max_lines=1, info="If player do not work, try to copy/paste the link in a new browser window")
         #text_status = gr.Textbox(label="status")
