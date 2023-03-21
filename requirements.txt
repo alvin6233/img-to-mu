@@ -2,7 +2,7 @@ httpx
 sentence-transformers
 ffmpeg
 audio2numpy
-
+openai
 pydub
 ffmpeg
 requests
