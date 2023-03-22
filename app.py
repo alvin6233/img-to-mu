@@ -14,6 +14,7 @@ import urllib
 import pydub
 from os import path
 from pydub import AudioSegment
+import emoji
 
 MUBERT_LICENSE = os.environ.get('MUBERT_LICENSE')
 MUBERT_TOKEN = os.environ.get('MUBERT_TOKEN')
@@ -110,12 +111,14 @@ def get_prompts(uploaded_image, track_duration, gen_intensity, gen_mode, openai_
     
     prompt = img_to_text(uploaded_image, 'best', 4, fn_index=1)[0]
     print(prompt)
+    prompt = remove_emoji(prompt)
+    print(f"prompt cleaned: {prompt}")
     musical_prompt = 'You did not use any OpenAI API key to pimp your result :)'
     if openai_api_key is not None:
         gpt_adaptation = try_api(prompt, openai_api_key)
         if gpt_adaptation[0] != "oups":
             musical_prompt = gpt_adaptation[0]
-            print(f"misical adapt: {musical_prompt}")
+            print(f"musical adapt: {musical_prompt}")
             music_result = get_results(musical_prompt, track_duration, gen_intensity, gen_mode)
         else:
             music_result = get_results(prompt, track_duration, gen_intensity, gen_mode)
@@ -237,6 +240,10 @@ def convert_mp3_to_wav(mp3_filepath):
   sound.export(wave_file, format="wav")
   
   return wave_file
+
+def remove_emoji(text):
+    return emoji.get_emoji_regexp().sub(u'', text)
+
 
 article = """
     
