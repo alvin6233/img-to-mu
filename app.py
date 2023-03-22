@@ -111,7 +111,7 @@ def get_prompts(uploaded_image, track_duration, gen_intensity, gen_mode, openai_
     prompt = img_to_text(uploaded_image, 'best', 4, fn_index=1)[0]
     print(prompt)
     musical_prompt = 'You did not use any OpenAI API key to pimp your result :)'
-    if openai_api_key != None:
+    if openai_api_key is not None:
         gpt_adaptation = try_api(prompt, openai_api_key)
         if gpt_adaptation[0] != "oups":
             musical_prompt = gpt_adaptation[0]
