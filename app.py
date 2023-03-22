@@ -67,7 +67,8 @@ def get_music(pat, prompt, track_duration, gen_intensity, gen_mode):
                                 "pat": pat,
                                 "mode":gen_mode,
                                 "duration":track_duration, 
-                                "intensity": gen_intensity
+                                "intensity": gen_intensity,
+                                "format": "wav"
                            }
     })
 
@@ -78,7 +79,7 @@ def get_music(pat, prompt, track_duration, gen_intensity, gen_mode):
     track = rdata['data']['tasks'][0]['download_link']
     print(track)
     
-    local_file_path = "sample.mp3"
+    local_file_path = "sample.wav"
 
     # Download the MP3 file from the URL
     headers = {
@@ -97,7 +98,7 @@ def get_music(pat, prompt, track_duration, gen_intensity, gen_mode):
     # Save the downloaded content to a local file
     with open(local_file_path, 'wb') as f:
         f.write(response.content)
-        return "sample.mp3", track
+        return "sample.wav", track
    
 
 def get_results(text_prompt,track_duration,gen_intensity,gen_mode):
