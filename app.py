@@ -14,7 +14,6 @@ import urllib
 import pydub
 from os import path
 from pydub import AudioSegment
-import emoji
 import re
 
 MUBERT_LICENSE = os.environ.get('MUBERT_LICENSE')
@@ -243,7 +242,13 @@ def convert_mp3_to_wav(mp3_filepath):
   return wave_file
 
 def remove_emoji(text):
-    return emoji.get_emoji_regexp().sub(u'', text)
+    emoji_pattern = re.compile("["
+        u"\U0001F600-\U0001F64F"  # emoticons
+        u"\U0001F300-\U0001F5FF"  # symbols & pictographs
+        u"\U0001F680-\U0001F6FF"  # transport & map symbols
+        u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
+                           "]+", flags=re.UNICODE)
+    return emoji_pattern.sub(r'', text)
 
 def remove_nonalphanumeric(text):
     return re.sub(r'[^a-zA-Z0-9\s]', '', text)
