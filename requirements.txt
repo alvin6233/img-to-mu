@@ -6,4 +6,3 @@ openai
 pydub
 ffmpeg
 requests
-emoji
