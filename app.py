@@ -111,7 +111,7 @@ def get_prompts(uploaded_image, track_duration, gen_intensity, gen_mode, openai_
     
     prompt = img_to_text(uploaded_image, 'best', 4, fn_index=1)[0]
     print(prompt)
-    prompt = clean_text(prompt)
+    clean_prompt = clean_text(prompt)
     print(f"prompt cleaned: {prompt}")
     musical_prompt = 'You did not use any OpenAI API key to pimp your result :)'
     if openai_api_key is not None:
@@ -121,9 +121,9 @@ def get_prompts(uploaded_image, track_duration, gen_intensity, gen_mode, openai_
             print(f"musical adapt: {musical_prompt}")
             music_result = get_results(musical_prompt, track_duration, gen_intensity, gen_mode)
         else:
-            music_result = get_results(prompt, track_duration, gen_intensity, gen_mode)
+            music_result = get_results(clean_prompt, track_duration, gen_intensity, gen_mode)
     else:
-        music_result = get_results(prompt, track_duration, gen_intensity, gen_mode)
+        music_result = get_results(clean_prompt, track_duration, gen_intensity, gen_mode)
     
     show_prompts = f"""
         CLIP Interrogator Caption: '{prompt}'
