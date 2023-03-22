@@ -256,6 +256,7 @@ def remove_nonalphanumeric(text):
 def clean_text(text):
     clean_text = remove_nonalphanumeric(text)
     clean_text = remove_emoji(clean_text)
+    clean_text = re.sub(r'\d+', '', clean_text) # Remove any number
     return clean_text
 
 article = """
