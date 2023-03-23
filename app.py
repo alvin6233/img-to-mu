@@ -85,7 +85,7 @@ def get_music(pat, prompt, track_duration, gen_intensity, gen_mode):
     headers = {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7; rv:93.0) Gecko/20100101 Firefox/93.0'}
 
-    retries = 5
+    retries = 3
     delay = 5  # in seconds
     while retries > 0:
         response = requests.get(track, headers=headers)
